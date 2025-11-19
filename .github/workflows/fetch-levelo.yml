@@ -2,7 +2,6 @@ name: Fetch levelo Data every 10 min
 
 on:
   schedule:
-    # Toutes les 10 min en UTC — correspond à toutes les 10 min heure de Paris via TZ
     - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
@@ -37,11 +36,11 @@ jobs:
           git config user.name "levelo-bot"
           git config user.email "levelo-bot@users.noreply.github.com"
 
-      - name: Push changes with PAT
+      - name: Push changes with GITHUB_TOKEN
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git add snapshots/levelo_*.csv
           git commit -m "snapshot: $(TZ=Europe/Paris date '+%Y-%m-%d %H:%M:%S %Z')" || exit 0
           git push origin HEAD:${GITHUB_REF#refs/heads/}
