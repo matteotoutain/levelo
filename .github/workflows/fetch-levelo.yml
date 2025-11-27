@@ -1,8 +1,6 @@
 name: Fetch levelo Data every 10 min
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
 jobs:
